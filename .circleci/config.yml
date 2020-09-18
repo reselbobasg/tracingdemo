@@ -1,0 +1,15 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: 'ubuntu-1604:202007-01'
+    steps:
+      - checkout
+      - run:
+          name: Install Docker Compose
+          command: |
+            set -x
+            curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+      - run: docker-compose up -d
+      - run: for i in {1..20}; do curl localhost:4000 -w "\n"; done
